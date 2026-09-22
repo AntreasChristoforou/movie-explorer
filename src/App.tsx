@@ -9,6 +9,22 @@ type Movie = {
     Poster : string;
   }
 
+  type MovieCardProps ={
+    movie : Movie;
+  }
+function MovieCard({movie}: MovieCardProps) {
+  return(
+      <li>
+        <img alt={movie.Title} src={movie.Poster === "N/A" ? "https://placehold.co/300x450?text=No+Poster" : movie.Poster}/>
+
+        <h3>{movie.Title}</h3> 
+        <p>{movie.Year}</p> 
+
+      </li>
+   
+  )
+}
+
 function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading , setLoading] = useState(false);
@@ -47,10 +63,8 @@ function App() {
     {error && <p>{error}</p>}
     <ul>
     {movies.map(movie =>
-      <li key={movie.imdbID}>
-        {movie.Title}
-      </li>
-    )}
+    <MovieCard  key={movie.imdbID} movie={movie}/>
+     )}
     </ul>
     </>
   )
