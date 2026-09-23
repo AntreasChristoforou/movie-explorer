@@ -11,7 +11,7 @@ type Movie = {
 
   type MovieCardProps ={
     movie : Movie;
-    onToggleFavorite : (id: string) => void;
+    onToggleFavorite : (movie: Movie) => void;
     isFavorite : boolean;
   }
 function MovieCard({movie , onToggleFavorite , isFavorite}: MovieCardProps) {
@@ -22,7 +22,7 @@ function MovieCard({movie , onToggleFavorite , isFavorite}: MovieCardProps) {
 
         <h3>{movie.Title}</h3> 
         <p>{movie.Year}</p> 
-        <button onClick={() => onToggleFavorite(movie.imdbID)}>{isFavorite ? "♥" : "♡"}</button>
+        <button onClick={() => onToggleFavorite(movie)}>{isFavorite ? "♥" : "♡"}</button>
         
       </li>
    
@@ -35,7 +35,8 @@ function App() {
   const [loading , setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [text, setText] = useState("");
-  const [favorites , setFavorites] = useState<string []>([]);
+  const [favorites , setFavorites] = useState<Movie[]>([]);
+  const [view , setView] = useState<"Results" | "Favorites">("Results");
   
 
     async function load() {
@@ -62,27 +63,30 @@ function App() {
       }
     }
 
-    function onToggleFavorite(id : string) {
-      if(favorites.includes(id)){
-        setFavorites(favorites.filter(n => n !== id));
+    function onToggleFavorite(favMovie : Movie) {
+      if(favorites.some(m => m.imdbID === favMovie.imdbID)){
+        setFavorites(favorites.filter(n => n.imdbID !== favMovie.imdbID));
       }
       else{
-        setFavorites([...favorites , id]);
+        setFavorites([...favorites , favMovie]);
       }
 
 }
 
+const visible = view === "Favorites" ? favorites : movies;
 
   return (
     <>
     <input value={text} onChange={e => setText(e.target.value)}/>
-    <button onClick={load}>Search</button>
-    {loading && <p>Loading...</p>}
-    {error && <p>{error}</p>}
+    <button onClick={() => {setView("Results"); load()}}>Search</button>
+    {loading && view === "Results" && <p>Loading...</p>}
+    {error && view === "Results" && <p>{error}</p>}
+    <button onClick={() =>setView("Favorites")}>Favorites</button>
+    {view === "Favorites" && visible.length === 0 && <p>No favorites yet</p>}
     <ul>
-    {movies.map(movie =>
+    {visible.map(movie =>
     
-    <MovieCard  key={movie.imdbID} movie={movie} onToggleFavorite={onToggleFavorite} isFavorite={favorites.includes(movie.imdbID)}/>
+    <MovieCard  key={movie.imdbID} movie={movie} onToggleFavorite={onToggleFavorite} isFavorite={favorites.some(m => m.imdbID === movie.imdbID)}/>
   
     )}
     </ul>
