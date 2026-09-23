@@ -37,6 +37,7 @@ function App() {
   const [text, setText] = useState("");
   const [favorites , setFavorites] = useState<Movie[]>([]);
   const [view , setView] = useState<"Results" | "Favorites">("Results");
+  const [hasSearched , setHasSearched] = useState(false);
   
 
     async function load() {
@@ -46,6 +47,7 @@ function App() {
       }
       setLoading(true);
       setError(null);
+      setHasSearched(true);
       try{
         const res = await fetch(`https://www.omdbapi.com/?apikey=${import.meta.env.VITE_OMDB_KEY}&s=${text}`);
         if(!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -75,12 +77,14 @@ function App() {
 
 const visible = view === "Favorites" ? favorites : movies;
 
+
   return (
     <>
     <input value={text} onChange={e => setText(e.target.value)}/>
     <button onClick={() => {setView("Results"); load()}}>Search</button>
     {loading && view === "Results" && <p>Loading...</p>}
     {error && view === "Results" && <p>{error}</p>}
+    {hasSearched && !loading && !error && view === "Results" &&  visible.length === 0 && <p>no matches</p>}
     <button onClick={() =>setView("Favorites")}>Favorites</button>
     {view === "Favorites" && visible.length === 0 && <p>No favorites yet</p>}
     <ul>
