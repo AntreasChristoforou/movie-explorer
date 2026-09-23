@@ -11,25 +11,32 @@ type Movie = {
 
   type MovieCardProps ={
     movie : Movie;
+    onToggleFavorite : (id: string) => void;
+    isFavorite : boolean;
   }
-function MovieCard({movie}: MovieCardProps) {
+function MovieCard({movie , onToggleFavorite , isFavorite}: MovieCardProps) {
   return(
-      <li>
+      <li>  
+        
         <img alt={movie.Title} src={movie.Poster === "N/A" ? "https://placehold.co/300x450?text=No+Poster" : movie.Poster}/>
 
         <h3>{movie.Title}</h3> 
         <p>{movie.Year}</p> 
-
+        <button onClick={() => onToggleFavorite(movie.imdbID)}>{isFavorite ? "♥" : "♡"}</button>
+        
       </li>
    
   )
 }
+
 
 function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading , setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [text, setText] = useState("");
+  const [favorites , setFavorites] = useState<string []>([]);
+  
 
     async function load() {
       if(text.trim() === ""){
@@ -55,6 +62,17 @@ function App() {
       }
     }
 
+    function onToggleFavorite(id : string) {
+      if(favorites.includes(id)){
+        setFavorites(favorites.filter(n => n !== id));
+      }
+      else{
+        setFavorites([...favorites , id]);
+      }
+
+}
+
+
   return (
     <>
     <input value={text} onChange={e => setText(e.target.value)}/>
@@ -63,8 +81,10 @@ function App() {
     {error && <p>{error}</p>}
     <ul>
     {movies.map(movie =>
-    <MovieCard  key={movie.imdbID} movie={movie}/>
-     )}
+    
+    <MovieCard  key={movie.imdbID} movie={movie} onToggleFavorite={onToggleFavorite} isFavorite={favorites.includes(movie.imdbID)}/>
+  
+    )}
     </ul>
     </>
   )
