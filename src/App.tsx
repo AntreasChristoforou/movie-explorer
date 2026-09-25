@@ -1,55 +1,31 @@
 import { useState } from 'react'
 import './App.css'
+import MovieList from './MovieList.tsx'
+import SearchBar from './SearchBar.tsx'
+import './types.ts'
 
-type Movie = {
-    Title : string;
-    Year : string;
-    imdbID : string;
-    Type : string;
-    Poster : string;
-  }
-
-  type MovieCardProps ={
-    movie : Movie;
-    onToggleFavorite : (movie: Movie) => void;
-    isFavorite : boolean;
-  }
-function MovieCard({movie , onToggleFavorite , isFavorite}: MovieCardProps) {
-  return(
-      <li>  
-        
-        <img alt={movie.Title} src={movie.Poster === "N/A" ? "https://placehold.co/300x450?text=No+Poster" : movie.Poster}/>
-
-        <h3>{movie.Title}</h3> 
-        <p>{movie.Year}</p> 
-        <button onClick={() => onToggleFavorite(movie)}>{isFavorite ? "♥" : "♡"}</button>
-        
-      </li>
-   
-  )
-}
 
 
 function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading , setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [text, setText] = useState("");
   const [favorites , setFavorites] = useState<Movie[]>([]);
   const [view , setView] = useState<"Results" | "Favorites">("Results");
   const [hasSearched , setHasSearched] = useState(false);
   
 
-    async function load() {
-      if(text.trim() === ""){
+    async function load(searchText: string) {
+      if(searchText.trim() === ""){
         setError("Empty search");
         return;
       }
       setLoading(true);
       setError(null);
       setHasSearched(true);
+      setView("Results");
       try{
-        const res = await fetch(`https://www.omdbapi.com/?apikey=${import.meta.env.VITE_OMDB_KEY}&s=${text}`);
+        const res = await fetch(`https://www.omdbapi.com/?apikey=${import.meta.env.VITE_OMDB_KEY}&s=${searchText}`);
         if(!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         setMovies(data.Search ?? []);
@@ -75,25 +51,54 @@ function App() {
 
 }
 
-const visible = view === "Favorites" ? favorites : movies;
+const remainingMovies = movies.slice(1);
+const featuredMovie = movies[0];
+const isFeaturedMovie = favorites.some(m => m.imdbID === featuredMovie?.imdbID);
+const visible = view === "Favorites" ? favorites : remainingMovies;
+
 
 
   return (
     <>
-    <input value={text} onChange={e => setText(e.target.value)}/>
-    <button onClick={() => {setView("Results"); load()}}>Search</button>
+    <div className="menu-grid">
+    <img className="home-icon"src="/images/homeicon.png"/>
+    <SearchBar load={load}/>
     {loading && view === "Results" && <p>Loading...</p>}
     {error && view === "Results" && <p>{error}</p>}
-    {hasSearched && !loading && !error && view === "Results" &&  visible.length === 0 && <p>no matches</p>}
-    <button onClick={() =>setView("Favorites")}>Favorites</button>
-    {view === "Favorites" && visible.length === 0 && <p>No favorites yet</p>}
-    <ul>
-    {visible.map(movie =>
+    {hasSearched && !loading && !error && view === "Results" &&  movies.length === 0 && <p>no matches</p>}
     
-    <MovieCard  key={movie.imdbID} movie={movie} onToggleFavorite={onToggleFavorite} isFavorite={favorites.some(m => m.imdbID === movie.imdbID)}/>
-  
-    )}
-    </ul>
+    <div className={view === "Favorites" ? "menu-actions active" : "menu-actions"}>
+      <img className="heart-menu" src={view === "Favorites" ? "/images/heartmenufilled.png": "/images/heartmenu.png"}/>
+    <button className="menu-favorites" onClick={() =>setView("Favorites")}>Favorites</button>
+    </div>
+    </div>
+    <section className="favorites-section">
+      <div className="favorites-intro">
+      <img className="favorites-icon" alt="favorites-icon-section" src="/images/favoritessectionheard.png" />
+      <div className="favorites-copy">
+      <h2>Favorites</h2>
+      <p>Your saved movies</p>
+      </div>
+      </div>
+      <MovieList visible={favorites} onFavorite={onToggleFavorite} favorites={favorites}/>
+      </section>
+      {
+        view === "Results" && featuredMovie && !loading && !error &&
+        <section className="featured-section">  
+          <img className="featured-backdrop" src={featuredMovie.Poster === "N/A" ? "https://placehold.co/300x450?text=No+Poster" : featuredMovie.Poster}/>
+          <img className="featured-poster" src={featuredMovie.Poster === "N/A" ? "https://placehold.co/300x450?text=No+Poster" : featuredMovie.Poster}/>
+          <div className="featured-details">
+          <p>FEATURED RESULT</p>
+          <h2>{featuredMovie.Title}</h2>
+          <p>{featuredMovie.Year}</p>
+          <button className="featured-favorite" onClick={() => onToggleFavorite(featuredMovie)}><img src={isFeaturedMovie ? "/images/heartmenufilled.png" : "/images/heartmenu.png"}/></button>
+
+          </div>
+        </section>
+      }
+    {view === "Favorites" && visible.length === 0 && <p>No favorites yet</p>}
+    <MovieList visible={visible} onFavorite={onToggleFavorite} favorites={favorites}/>
+    
     </>
   )
 }
