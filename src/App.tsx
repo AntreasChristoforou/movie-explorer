@@ -1,8 +1,14 @@
 import { useState } from 'react'
+import { Routes, Route, NavLink, Link ,useNavigate} from "react-router";
 import './App.css'
-import MovieList from './MovieList.tsx'
-import SearchBar from './SearchBar.tsx'
-import './types.ts'
+import type { Movie } from './types'
+import SearchBar from './SearchBar'
+import SearchPage from './SearchPage'
+import FavoritesPage from './favorites'
+import MovieDetails from './MovieDetails'
+
+
+
 
 
 
@@ -11,19 +17,21 @@ function App() {
   const [loading , setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [favorites , setFavorites] = useState<Movie[]>([]);
-  const [view , setView] = useState<"Results" | "Favorites">("Results");
+  const navigate = useNavigate();
   const [hasSearched , setHasSearched] = useState(false);
   
 
     async function load(searchText: string) {
+      navigate("/"); 
       if(searchText.trim() === ""){
         setError("Empty search");
         return;
       }
+      
       setLoading(true);
       setError(null);
       setHasSearched(true);
-      setView("Results");
+      
       try{
         const res = await fetch(`https://www.omdbapi.com/?apikey=${import.meta.env.VITE_OMDB_KEY}&s=${searchText}`);
         if(!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -51,54 +59,41 @@ function App() {
 
 }
 
-const remainingMovies = movies.slice(1);
-const featuredMovie = movies[0];
-const isFeaturedMovie = favorites.some(m => m.imdbID === featuredMovie?.imdbID);
-const visible = view === "Favorites" ? favorites : remainingMovies;
+
+
+
 
 
 
   return (
     <>
-    <div className="menu-grid">
-    <img className="home-icon"src="/images/homeicon.png"/>
+    <nav className="menu-grid">
+    <Link to="/"><img className="home-icon"src="/images/homeicon.png" alt="Home"/></Link>
+    
     <SearchBar load={load}/>
-    {loading && view === "Results" && <p>Loading...</p>}
-    {error && view === "Results" && <p>{error}</p>}
-    {hasSearched && !loading && !error && view === "Results" &&  movies.length === 0 && <p>no matches</p>}
+    <NavLink
+        to="/favorites"
+        className={({ isActive }) => isActive ? "menu-actions active" : "menu-actions"}
+      >
+        {({ isActive }) => (
+          <>
+            <img className="heart-menu" alt="" src={isActive ? "/images/heartmenufilled.png" : "/images/heartmenu.png"} />
+            Favorites
+          </>
+        )}
+      </NavLink>
+    </nav>
     
-    <div className={view === "Favorites" ? "menu-actions active" : "menu-actions"}>
-      <img className="heart-menu" src={view === "Favorites" ? "/images/heartmenufilled.png": "/images/heartmenu.png"}/>
-    <button className="menu-favorites" onClick={() =>setView("Favorites")}>Favorites</button>
-    </div>
-    </div>
-    <section className="favorites-section">
-      <div className="favorites-intro">
-      <img className="favorites-icon" alt="favorites-icon-section" src="/images/favoritessectionheard.png" />
-      <div className="favorites-copy">
-      <h2>Favorites</h2>
-      <p>Your saved movies</p>
-      </div>
-      </div>
-      <MovieList visible={favorites} onFavorite={onToggleFavorite} favorites={favorites}/>
-      </section>
-      {
-        view === "Results" && featuredMovie && !loading && !error &&
-        <section className="featured-section">  
-          <img className="featured-backdrop" src={featuredMovie.Poster === "N/A" ? "https://placehold.co/300x450?text=No+Poster" : featuredMovie.Poster}/>
-          <img className="featured-poster" src={featuredMovie.Poster === "N/A" ? "https://placehold.co/300x450?text=No+Poster" : featuredMovie.Poster}/>
-          <div className="featured-details">
-          <p>FEATURED RESULT</p>
-          <h2>{featuredMovie.Title}</h2>
-          <p>{featuredMovie.Year}</p>
-          <button className="featured-favorite" onClick={() => onToggleFavorite(featuredMovie)}><img src={isFeaturedMovie ? "/images/heartmenufilled.png" : "/images/heartmenu.png"}/></button>
+      
+  
+    
 
-          </div>
-        </section>
-      }
-    {view === "Favorites" && visible.length === 0 && <p>No favorites yet</p>}
-    <MovieList visible={visible} onFavorite={onToggleFavorite} favorites={favorites}/>
-    
+    <Routes>
+    <Route path="/" element={<SearchPage loading={loading} error={error} favorites={favorites} movies={movies} onFavorite={onToggleFavorite} hasSearched={hasSearched}/>}/>
+    <Route path="/favorites" element={<FavoritesPage favorites={favorites} onFavorite={onToggleFavorite}/>}/>
+    <Route path="/movie/:id" element={<MovieDetails />}/>
+
+    </Routes>
     </>
   )
 }

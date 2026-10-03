@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import type { Movie } from './types'
 import './App.css'
 import './types.ts'
 
