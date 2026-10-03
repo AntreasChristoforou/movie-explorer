@@ -1,20 +1,20 @@
 import { useState } from 'react'
-import type { Movie } from './types'
+
 import './App.css'
 
 type SearchBarProps ={
-    load : (text : string) => void;
+    handleSearch : (text : string) => void;
   }
 
 
 
-function SearchBar({load} : SearchBarProps) {
+function SearchBar({handleSearch} : SearchBarProps) {
 const [text, setText] = useState("");
 
   return(
     <div className="search-bar">
     <input className="input-bar" value={text} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setText(e.target.value)}/>
-    <button className="search-button"onClick={() => load(text)}>Search</button>
+    <button className="search-button"onClick={() => handleSearch(text)}>Search</button>
     </div>
   )
 }
