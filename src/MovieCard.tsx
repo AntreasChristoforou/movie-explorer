@@ -1,7 +1,8 @@
-import { useState } from 'react'
 import type { Movie } from './types'
 import './App.css'
-import './types.ts'
+import {Link} from "react-router"
+import { getPosterUrl } from './utils'
+
 
 
 type MovieCardProps ={
@@ -13,10 +14,11 @@ type MovieCardProps ={
 function MovieCard({movie , onToggleFavorite , isFavorite}: MovieCardProps) {
   return(
       <li className="movie-card">  
-        
-        <img className="movie-poster" alt={movie.Title} src={movie.Poster === "N/A" ? "https://placehold.co/300x450?text=No+Poster" : movie.Poster}/>
+        <Link to={`/movie/${movie.imdbID}`}>
+        <img className="movie-poster" alt={movie.Title} src={getPosterUrl(movie.Poster)}/>
 
         <h3>{movie.Title}</h3> 
+        </Link>
         <p>{movie.Year}</p> 
         <button className="addfavorite-button" onClick={() => onToggleFavorite(movie)}><img src={isFavorite ? "/images/heartmenufilled.png" : "/images/heartmenu.png"}/></button>
         

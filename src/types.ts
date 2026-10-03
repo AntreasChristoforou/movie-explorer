@@ -5,3 +5,16 @@ export type Movie = {
     Type : string;
     Poster : string;
   }
+
+  export type MovieInfo = {
+    Title : string;
+    Year : string;
+    Released : string;
+    Runtime : string;
+    Genre : string;
+    Director : string;
+    Actors : string;
+    Plot : string;
+    Poster : string;
+    imdbRating : string;
+  }
