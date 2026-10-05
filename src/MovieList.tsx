@@ -1,4 +1,4 @@
-import './types.ts'
+
 import './App.css'
 import MovieCard from './MovieCard.tsx'
 import type { Movie } from './types'
