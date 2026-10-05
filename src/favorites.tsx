@@ -2,17 +2,14 @@
 import './App.css'
 
 import MovieList from './MovieList'
-import type { Movie } from './types'
 
-type FavoritesPageProps ={
-  
-  favorites : Movie[];
-  onFavorite : (movie: Movie) => void;
-}
+import {useFavorites} from './FavoritesProvider'
 
 
 
-function FavoritesPage({ onFavorite ,  favorites} : FavoritesPageProps) {
+function FavoritesPage() {
+const {favorites} = useFavorites();
+
   return(
     <>
          { favorites.length === 0 && <p>No favorites yet</p>}
@@ -25,7 +22,7 @@ function FavoritesPage({ onFavorite ,  favorites} : FavoritesPageProps) {
       <p>Your saved movies</p>
       </div>
       </div>
-      <MovieList visible={favorites} onFavorite={onFavorite} favorites={favorites}/>
+      <MovieList visible={favorites}/>
       </section>
       </>
   )

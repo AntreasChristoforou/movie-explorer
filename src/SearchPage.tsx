@@ -4,25 +4,27 @@ import MovieList from './MovieList'
 import type { Movie } from './types'
 import {Link} from "react-router"
 import { getPosterUrl } from './utils'
+import { useFavorites } from './FavoritesProvider'
 
 
 type SearchPageProps ={
     movies: Movie[];
     loading : boolean;
     error : string | null;
-    onFavorite : (movie: Movie) => void;
-    favorites: Movie[];
+    
     hasSearched : boolean;
 }
 
 
 
 
-function SearchPage({movies , loading , error , onFavorite , favorites , hasSearched} : SearchPageProps) {
+function SearchPage({movies , loading , error , hasSearched} : SearchPageProps) {
 
     const remainingMovies = movies.slice(1);
     const featuredMovie = movies[0];
+    const {favorites , toggleFavorite} = useFavorites();
     const isFeaturedMovie = favorites.some(m => m.imdbID === featuredMovie?.imdbID);
+   
 
   return(
     <>
@@ -43,13 +45,13 @@ function SearchPage({movies , loading , error , onFavorite , favorites , hasSear
           <h2>{featuredMovie.Title}</h2>
           <p>{featuredMovie.Year}</p>
           
-          <button className="featured-favorite" onClick={() => onFavorite(featuredMovie)}><img src={isFeaturedMovie ? "/images/heartmenufilled.png" : "/images/heartmenu.png"}/></button>
+          <button className="featured-favorite" onClick={() => toggleFavorite(featuredMovie)}><img src={isFeaturedMovie ? "/images/heartmenufilled.png" : "/images/heartmenu.png"}/></button>
 
           </div>
         </section>
       }
 
-      <MovieList visible={remainingMovies} onFavorite={onFavorite} favorites={favorites}/>
+      <MovieList visible={remainingMovies}/>
     </>
   )
 }
