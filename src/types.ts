@@ -9,6 +9,8 @@ export type Movie = {
   export type MovieInfo = {
     Title : string;
     Year : string;
+    imdbID : string;
+    Type : string;
     Released : string;
     Runtime : string;
     Genre : string;

@@ -4,15 +4,17 @@ import { useParams,useNavigate} from "react-router"
 
 import { getPosterUrl } from './utils'
 import { useMovie } from './useMovie';
+import {useFavorites} from './FavoritesProvider'
 
 
 
 
 function MovieDetails() {
+  const {favorites , toggleFavorite} = useFavorites();
   const {id} = useParams();
   const navigate = useNavigate();
   const {movieInfo , loading, error} = useMovie(id);
-
+  const isFavorite = favorites.some(m => m.imdbID === id);
   
 
 if (loading) return <p>Loading...</p>;
@@ -40,6 +42,9 @@ if (!movieInfo) return null;
       <span>
         <p>⭐ {movieInfo.imdbRating}/10</p>
         </span>
+      <button className="addfavorite-button" onClick={() => toggleFavorite(movieInfo)}>
+        <img alt={isFavorite ? "Remove from favorites" : "Add to favorites"} src={isFavorite ? "/images/heartmenufilled.png" : "/images/heartmenu.png"}/>
+        </button>
       <button onClick={() => navigate(-1)}>
       GO BACK
       </button>
