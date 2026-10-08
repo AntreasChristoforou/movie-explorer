@@ -40,25 +40,6 @@ input {
   margin: 32px 0 0;
 }
 
-.movie-poster{
-  display: block;
-  width: 100%;
-  aspect-ratio: 2 / 3;
-  object-fit: cover;
-}
-
-.movie-card{
-    background-color: var( --surface);
-    border : 1px solid var( --border);
-    border-radius: 16px;
-    overflow: hidden;
-}
-
-.movie-card:hover{
-   border-color: var(--accent);
-   transform: translateY(-4px);
-   box-shadow: 0 8px 24px rgba(121, 87, 255, 0.18);
-}
 .menu-grid{
     display: flex;
     align-items: center;
@@ -160,15 +141,7 @@ input {
     box-shadow: 0 0 8px var(--accent);
 }
 
-.addfavorite-button{
-    background: none;
-    border: none;
-}
 
-.addfavorite-button img{
-    width: 20px;
-    height: auto;
-}
 
 
 .favorites-section{
