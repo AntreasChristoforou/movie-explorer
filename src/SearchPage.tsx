@@ -10,7 +10,6 @@ type SearchPageProps ={
     movies: Movie[];
     loading : boolean;
     error : string | null;
-    
     hasSearched : boolean;
 }
 
@@ -44,7 +43,7 @@ function SearchPage({movies , loading , error , hasSearched} : SearchPageProps) 
           <h2 className='mb-3 text-4xl'>{featuredMovie.Title}</h2>
           <p className='m-0 text-muted '>{featuredMovie.Year}</p>
           
-          <button aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"} className="inline-flex items-center justify-center w-12 h-12 mt-6 p-3 bg-surface border border-border rounded-[50%] cursor-pointer transition-colors duration-200 hover:border-accent hover:bg-accent/12 focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-4" onClick={() => toggleFavorite(featuredMovie)}><img alt="" className='block w-6 h-6 object-contain' src={isFeaturedMovie ? "/images/heartmenufilled.png" : "/images/heartmenu.png"}/></button>
+          <button aria-label={isFeaturedMovie ? "Remove from favorites" : "Add to favorites"} className="inline-flex items-center justify-center w-12 h-12 mt-6 p-3 bg-surface border border-border rounded-[50%] cursor-pointer transition-colors duration-200 hover:border-accent hover:bg-accent/12 focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-4" onClick={() => toggleFavorite(featuredMovie)}><img alt="" className='block w-6 h-6 object-contain' src={isFeaturedMovie ? "/images/heartmenufilled.png" : "/images/heartmenu.png"}/></button>
 
           </div>
         </section>

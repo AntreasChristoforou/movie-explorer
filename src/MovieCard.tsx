@@ -7,12 +7,33 @@ import { useFavorites } from './FavoritesProvider'
 
 type MovieCardProps ={
     movie : Movie;
+    variant?: "grid" | "compact";
   }
 
-function MovieCard({movie}: MovieCardProps) {
+function MovieCard({movie , variant= "grid" }: MovieCardProps) {
   const { favorites, toggleFavorite } = useFavorites();
   const isFavorite = favorites.some(m => m.imdbID === movie.imdbID);
-   
+   if(variant === "compact"){
+      return(
+      
+        <li className='grid w-60 shrink-0 	grid-cols-[72px_minmax(0,1fr)_32px] gap-x-2.5 items-center text-left'>  
+        
+        <Link to={`/movie/${movie.imdbID}`} className='col-start-1 row-span-2 '>
+        <img className="w-[72px] h-20 object-cover rounded-lg " alt={movie.Title} src={getPosterUrl(movie.Poster)}/>
+        </Link>
+        
+        <button aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"} className="col-start-3 row-span-2 p-0 justify-self-center" onClick={() => toggleFavorite(movie)}><img alt="" className="w-5 h-auto" src={isFavorite ? "/images/heartmenufilled.png" : "/images/heartmenu.png"}/></button>
+        
+        
+       
+        <h3 className='col-start-2 row-start-1 m-0 text-[13px] self-end truncate'>{movie.Title}</h3> 
+        
+        <p className='col-start-2 row-start-2 m-0 text-[12px] text-muted self-start'>{movie.Year}</p> 
+        
+      </li>
+      
+      )
+   }
   return(
     
       <li>  

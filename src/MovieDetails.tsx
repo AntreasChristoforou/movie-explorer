@@ -1,5 +1,5 @@
 
-import './App.css'
+
 import { useParams,useNavigate} from "react-router"
 
 import { getPosterUrl } from './utils'
@@ -42,7 +42,7 @@ if (!movieInfo) return null;
       <span>
         <p>⭐ {movieInfo.imdbRating}/10</p>
         </span>
-      <button className="addfavorite-button" onClick={() => toggleFavorite(movieInfo)}>
+      <button onClick={() => toggleFavorite(movieInfo)}>
         <img alt={isFavorite ? "Remove from favorites" : "Add to favorites"} src={isFavorite ? "/images/heartmenufilled.png" : "/images/heartmenu.png"}/>
         </button>
       <button onClick={() => navigate(-1)}>
