@@ -14,7 +14,7 @@ const {favorites} = useFavorites();
     <>
          { favorites.length === 0 && <p>No favorites yet</p>}
 
-         <section className="favorites-section">
+         <section className="flex items-center gap-6 p-4 mt-6 bg-surface border border-border rounded-2xl">
       <div className="favorites-intro">
       <img className="favorites-icon" alt="favorites-icon-section" src="/images/favoritessectionheard.png" />
       <div className="favorites-copy">

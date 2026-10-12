@@ -1,5 +1,3 @@
-
-import './App.css'
 import MovieCard from './MovieCard.tsx'
 import type { Movie } from './types'
 
@@ -11,7 +9,7 @@ type MovieListProps ={
 
 function MovieList({visible} : MovieListProps) {
   return (
-    <ul className="movie-grid">
+    <ul className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-5 mt-8">
     {visible.map(movie =>
     
     <MovieCard  key={movie.imdbID} movie={movie} />

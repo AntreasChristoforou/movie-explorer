@@ -8,4 +8,9 @@
   --color-border: #303354;
   --color-accent: #7957ff;
   --color-muted: #aaaecb;
+  --color-page: #080b18;
+}
+
+@layer base {
+  body { @apply bg-page text-white font-sans antialiased scheme-dark; }
 }
