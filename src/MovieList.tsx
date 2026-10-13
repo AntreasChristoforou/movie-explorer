@@ -21,7 +21,7 @@ function MovieList({visible, variant} : MovieListProps) {
     )
   }
   return (
-    <ul className="grid grid-cols-2 md:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-5 mt-8">
+    <ul className="grid grid-cols-2 md:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-5 mt-8 ">
     {visible.map(movie =>
     
     <MovieCard  key={movie.imdbID} movie={movie} variant={variant} />
