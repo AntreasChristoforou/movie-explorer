@@ -40,6 +40,8 @@ function handleSearch(text: string) {
   return (
     <>
     <div className="max-w-[1440px] min-h-screen mx-auto p-4 md:p-6">
+      <h1 className="sr-only">Movie Explorer</h1>
+      <header>
     <nav className="flex items-center md:gap-6 w-full max-md:gap-4">
     <Link to="/"><img className="max-md:w-10 md:w-12 h-auto"src="/images/homeicon.png" alt="Home"/></Link>
     
@@ -67,17 +69,18 @@ function handleSearch(text: string) {
         )}
       </NavLink>
     </nav>
-    
+    </header>
       
   
     
-
+    <main>    
     <Routes>
     <Route path="/" element={<SearchPage loading={loading} error={error} movies={movies} hasSearched={hasSearched}/>}/>
     <Route path="/favorites" element={<FavoritesPage/>}/>
     <Route path="/movie/:id" element={<MovieDetails />}/>
 
     </Routes>
+    </main>
     </div>
     </>
   )
