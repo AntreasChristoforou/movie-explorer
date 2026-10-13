@@ -11,7 +11,7 @@ type MovieListProps ={
 function MovieList({visible, variant} : MovieListProps) {
   if(variant==="compact"){
     return(
-      <ul className="flex gap-3 flex-1 min-w-0 overflow-x-auto m-0 py-2 px-1">
+      <ul className="flex flex-col md:flex-row gap-3 flex-1 min-w-0 overflow-x-auto m-0 py-2 px-1">
     {visible.map(movie =>
     
     <MovieCard  key={movie.imdbID} movie={movie} variant={variant} />
@@ -21,7 +21,7 @@ function MovieList({visible, variant} : MovieListProps) {
     )
   }
   return (
-    <ul className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-5 mt-8">
+    <ul className="grid grid-cols-2 md:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-5 mt-8">
     {visible.map(movie =>
     
     <MovieCard  key={movie.imdbID} movie={movie} variant={variant} />

@@ -39,14 +39,14 @@ function handleSearch(text: string) {
 
   return (
     <>
-    <div className="max-w-[1440px] min-h-screen mx-auto p-6">
-    <nav className="flex items-center gap-6 w-full">
-    <Link to="/"><img className="w-12 h-auto"src="/images/homeicon.png" alt="Home"/></Link>
+    <div className="max-w-[1440px] min-h-screen mx-auto p-4 md:p-6">
+    <nav className="flex items-center md:gap-6 w-full max-md:gap-4">
+    <Link to="/"><img className="max-md:w-10 md:w-12 h-auto"src="/images/homeicon.png" alt="Home"/></Link>
     
     <SearchBar handleSearch={handleSearch}/>
     <NavLink
         to="/favorites"
-        className="relative ml-auto flex shrink-0 items-center gap-2 px-3 py-2
+        className="relative md:ml-auto flex shrink-0 items-center md:gap-2  md:px-3 py-2
              text-muted transition-colors hover:text-white
              aria-[current=page]:text-accent
 
@@ -62,7 +62,7 @@ function handleSearch(text: string) {
         {({ isActive }) => (
           <>
             <img className="w-6 h-auto" alt="" src={isActive ? "/images/heartmenufilled.png" : "/images/heartmenu.png"} />
-            Favorites
+            <span className="max-md:sr-only">Favorites</span>
           </>
         )}
       </NavLink>

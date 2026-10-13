@@ -16,7 +16,7 @@ function MovieCard({movie , variant= "grid" }: MovieCardProps) {
    if(variant === "compact"){
       return(
       
-        <li className='grid w-60 shrink-0 	grid-cols-[72px_minmax(0,1fr)_32px] gap-x-2.5 items-center text-left'>  
+        <li className='grid w-full md:w-60 shrink-0 grid-cols-[72px_minmax(0,1fr)_32px] gap-x-2.5 items-center text-left'>  
         
         <Link to={`/movie/${movie.imdbID}`} className='col-start-1 row-span-2 '>
         <img className="w-[72px] h-20 object-cover rounded-lg " alt={movie.Title} src={getPosterUrl(movie.Poster)}/>

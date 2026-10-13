@@ -14,7 +14,7 @@ const {favorites} = useFavorites();
     <>
          { favorites.length === 0 && <p>No favorites yet</p>}
 
-         <section className="flex items-center gap-6 p-4 mt-6 bg-surface border border-border rounded-2xl">
+         <section className="flex flex-col md:flex-row gap-6 p-4 mt-6 bg-surface border border-border rounded-2xl">
       <div className="flex items-center gap-3 shrink-0">
       <img alt="" className="size-12 object-contain" src="/images/favoritessectionheard.png" />
       <div>
