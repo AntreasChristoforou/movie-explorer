@@ -79,3 +79,16 @@ Search for any movie, open its details page, and save favorites that stay after 
 - Pagination for long result lists
 - Unit and component tests with Vitest and React Testing Library
 - Smaller, optimized images for faster loading on mobile
+
+## Tests
+
+Tests use ViteTest and React Testing Library.
+
+​```bash
+npm test
+​```
+
+What's covered:
+- `getPosterUrl` (the poster helper)
+- `toggleMovie` (adding, removing, not changing the original list)
+- `FavoritesPage` (the empty favorites message)
