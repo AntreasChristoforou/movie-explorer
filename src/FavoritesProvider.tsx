@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react"
 import type { Movie } from './types'
+import {toggleMovie} from './utils'
 
 type FavoritesContextProp = {
     favorites : Movie[];
@@ -43,13 +44,7 @@ export function FavoritesProvider ({ children }: { children: React.ReactNode }){
 }, [favorites]);
 
    function toggleFavorite(favMovie : Movie) {
-      if(favorites.some(m => m.imdbID === favMovie.imdbID)){
-        setFavorites(favorites.filter(n => n.imdbID !== favMovie.imdbID));
-      }
-      else{
-        setFavorites([...favorites , favMovie]);
-      }
-
+    setFavorites(toggleMovie(favorites , favMovie));
 }
 
    return(
